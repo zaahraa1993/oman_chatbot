@@ -17,7 +17,8 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from sklearn.metrics.pairwise import cosine_similarity
 
 #data 
-CSV_PATH = os.environ.get("DATA_CSV", "/content/drive/MyDrive/oman_investment_chatbot_unique.csv")
+CSV_PATH = os.environ.get("DATA_CSV", "/root/oman_chatbot/oman_investment_chatbot_unique.csv")
+
 
 #FastAPI
 app = FastAPI(title="Oman Investment RAG Chatbot", version="0.2")
@@ -124,5 +125,6 @@ def chat(req: ChatRequest):
             "snippet": d["page_content"][:180],
             "metadata": d["metadata"]
         })
+
 
     return {"answer": answer, "sources": sources}
