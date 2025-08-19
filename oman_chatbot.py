@@ -88,9 +88,8 @@ def root():
 
 @app.post("/chat")
 def chat(req: ChatRequest):
-    # filter topic 
     if req.topic:
-        filtered_docs = [d for d in docs if d["metadata"].get("topic") == req.topic]
+        filtered_docs = [d for d in docs if d.metadata.get("topic") == req.topic]
         vectorstore_filtered = FAISS.from_documents(filtered_docs, _embeddings)
         retriever_filtered = vectorstore_filtered.as_retriever(search_kwargs={"k": req.k})
         qa_filtered = RetrievalQA.from_chain_type(
@@ -106,9 +105,8 @@ def chat(req: ChatRequest):
 
     answer = res["result"]
 
-    #  fallback with similarity
     query_emb = _embeddings.embed_query(req.question)
-    doc_embs = [_embeddings.embed_query(d["page_content"]) for d in res.get("source_documents", [])]
+    doc_embs = [_embeddings.embed_query(d.page_content) for d in res.get("source_documents", [])]
 
     if doc_embs:
         sims = cosine_similarity([query_emb], doc_embs)[0]
@@ -118,13 +116,11 @@ def chat(req: ChatRequest):
     else:
         answer = "I don't know. Please consult a domain expert."
 
-    # resources
     sources = []
     for d in res.get("source_documents", [])[:req.k]:
         sources.append({
-            "snippet": d["page_content"][:180],
-            "metadata": d["metadata"]
+            "snippet": d.page_content[:180],
+            "metadata": d.metadata
         })
-
 
     return {"answer": answer, "sources": sources}
