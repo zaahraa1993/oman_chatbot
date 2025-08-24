@@ -1,6 +1,6 @@
 ### Oman Investment Chatbot
 
-This project is a simple Retrieval-Augmented Generation (RAG) chatbot that answers questions about Oman Vision 2040 and related investment opportunities.
+This project is a simple Retrieval-Augmented Generation (RAG) chatbot that answers questions about Oman investment opportunities.
 
 Backend: Python + FastAPI
 
